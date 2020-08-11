@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">QuizGame</string>
+    <string name="question_tehran">تهران پایتخت ایران است</string>
+    <string name="question_oceans">اقیانوس آرام بزرگترین اقیانوس جهان است</string>
+    <string name="question_middleast">همه ی کشورهای خاور میانه عرب زبان هستند</string>
+    <string name="question_australia">استرالیا بزرگترین قاره ی جهان است </string>
+    <string name="question_africa">مصردر قاره ی آفریقا است</string>
+    <string name="question_americans">آمریکا پرجمعیت ترین کشور دنیا است</string>
+    <string name="question_asia">قاره ی آسیا در نیمکره ی جنوبی جهان است</string>
+    <string name="toast_true">جواب شما صحیح است</string>
+    <string name="toast_false">جواب شما غلط است</string>
+    <string name="game_over">بازی تمام شد!!!</string>
+</resources>
