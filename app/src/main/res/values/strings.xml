@@ -10,4 +10,8 @@
     <string name="toast_true">جواب شما صحیح است</string>
     <string name="toast_false">جواب شما غلط است</string>
     <string name="game_over">بازی تمام شد!!!</string>
+    <string name="cheat_button">تقلب</string>
+    <string name="questioncheat_text">آیا مایل به تقلب هستید؟</string>
+    <string name="nocheat_button">خیر</string>
+    <string name="yescheat_button">بله</string>
 </resources>

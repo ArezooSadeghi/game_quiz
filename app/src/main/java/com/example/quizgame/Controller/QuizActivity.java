@@ -3,18 +3,21 @@ package com.example.quizgame.Controller;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.quizgame.CheatActivity;
 import com.example.quizgame.R;
 import com.example.quizgame.model.Question;
 
@@ -22,6 +25,8 @@ public class QuizActivity extends AppCompatActivity {
 
     private ImageButton mImageButtonTrue, mImageButtonFalse, mImageButtonNext, mImageButtonPrev,
             mImageButtonFirst, mImageButtonLast, mImageButtonReset;
+
+    private Button mButtonCheat;
 
     private TextView mTextViewQuestion, mTextViewScore, mTextViewFinalScore;
 
@@ -33,6 +38,7 @@ public class QuizActivity extends AppCompatActivity {
     private static final String M_SCORE = "mScore";
     private static final String M_NUM_OF_ANSWERED = "mNumOfAnswered";
     private static final String M_QUESTIONS_BANK = "mQuestionsBank";
+    public static final String EXTRA_ANSWER_OF_QUESTION = "EXTRA_ANSWER_OF_QUESTION";
 
     Question[] mQuestionsBank = {new Question(R.string.question_tehran, true),
             new Question(R.string.question_africa, true),
@@ -179,6 +185,15 @@ public class QuizActivity extends AppCompatActivity {
                 }
             }
         });
+
+        mButtonCheat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(QuizActivity.this, CheatActivity.class);
+                intent.putExtra(EXTRA_ANSWER_OF_QUESTION, mQuestionsBank[mCurrentIndex].isTrueAnswer());
+                startActivity(intent);
+            }
+        });
     }
 
     private void checkedAnswer(boolean userPressed) {
@@ -235,6 +250,7 @@ public class QuizActivity extends AppCompatActivity {
         mImageButtonFirst = findViewById(R.id.btn_first);
         mImageButtonLast = findViewById(R.id.btn_last);
         mImageButtonReset = findViewById(R.id.btn_reset);
+        mButtonCheat = findViewById(R.id.btn_cheat);
         mTextViewQuestion = findViewById(R.id.txt_question);
         mTextViewScore = findViewById(R.id.txt_score);
         mTextViewFinalScore = findViewById(R.id.txt_finalscore);
