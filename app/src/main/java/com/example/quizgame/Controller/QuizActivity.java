@@ -57,8 +57,8 @@ public class QuizActivity extends AppCompatActivity {
         findViews();
         if (savedInstanceState != null) {
             mCurrentIndex = savedInstanceState.getInt(M_CURRENT_INDEX, 0);
-            mScore = savedInstanceState.getInt(M_SCORE, 0);
             mNumOfAnswered = savedInstanceState.getInt(M_NUM_OF_ANSWERED, 0);
+            mScore = savedInstanceState.getInt(M_SCORE, 0);
             mQuestionsBank = (Question[]) savedInstanceState.getSerializable(M_QUESTIONS_BANK);
 
         }
@@ -158,8 +158,7 @@ public class QuizActivity extends AppCompatActivity {
                 mLayoutMiddle.setVisibility(View.VISIBLE);
                 mLayoutLast.setVisibility(View.VISIBLE);
                 mTextViewScore.setVisibility(View.VISIBLE);
-                mImageButtonTrue.setEnabled(true);
-                mImageButtonFalse.setEnabled(true);
+                mButtonCheat.setVisibility(View.VISIBLE);
                 mScore = 0;
                 mNumOfAnswered = 0;
                 mCurrentIndex = 0;
@@ -198,7 +197,7 @@ public class QuizActivity extends AppCompatActivity {
                 LayoutInflater inflater = getLayoutInflater();
                 View layout = inflater.inflate(R.layout.custom_toast, (ViewGroup) findViewById(R.id.toast_layout));
                 Toast toast = new Toast(this);
-                toast.setGravity(Gravity.BOTTOM, 0, 0);
+                toast.setGravity(Gravity.BOTTOM, 0, 75);
                 toast.setDuration(Toast.LENGTH_SHORT);
                 TextView textView = layout.findViewById(R.id.txt_toast);
                 textView.setText(R.string.toast_true);
@@ -230,6 +229,7 @@ public class QuizActivity extends AppCompatActivity {
                 mLayoutMiddle.setVisibility(View.GONE);
                 mLayoutLast.setVisibility(View.GONE);
                 mTextViewScore.setVisibility(View.GONE);
+                mButtonCheat.setVisibility(View.GONE);
                 mTextViewFinalScore.setText("امتیاز کسب شده شما در این بازی : " + mScore);
             }
         }
