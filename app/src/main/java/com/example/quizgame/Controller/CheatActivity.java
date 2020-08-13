@@ -1,4 +1,4 @@
-package com.example.quizgame;
+package com.example.quizgame.Controller;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.quizgame.Controller.QuizActivity;
+import com.example.quizgame.R;
 
 public class CheatActivity extends AppCompatActivity {
     private Button mButtonYesCheat, mButtonNoCheat;

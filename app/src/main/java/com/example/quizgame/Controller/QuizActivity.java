@@ -17,7 +17,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.quizgame.CheatActivity;
 import com.example.quizgame.R;
 import com.example.quizgame.model.Question;
 
@@ -56,6 +55,16 @@ public class QuizActivity extends AppCompatActivity {
         setContentView(R.layout.activity_quiz);
 
         findViews();
+        if (savedInstanceState != null) {
+            mCurrentIndex = savedInstanceState.getInt(M_CURRENT_INDEX, 0);
+            mScore = savedInstanceState.getInt(M_SCORE, 0);
+            mNumOfAnswered = savedInstanceState.getInt(M_NUM_OF_ANSWERED, 0);
+            mQuestionsBank = (Question[]) savedInstanceState.getSerializable(M_QUESTIONS_BANK);
+
+        }
+
+
+
 
         setListeners();
 
@@ -71,17 +80,6 @@ public class QuizActivity extends AppCompatActivity {
         outState.putInt(M_SCORE, mScore);
         outState.putInt(M_NUM_OF_ANSWERED, mNumOfAnswered);
         outState.putSerializable(M_QUESTIONS_BANK, mQuestionsBank);
-    }
-
-    @Override
-    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
-        super.onRestoreInstanceState(savedInstanceState);
-        mCurrentIndex = savedInstanceState.getInt(M_CURRENT_INDEX, 0);
-        mTextViewQuestion.setText(mQuestionsBank[mCurrentIndex].getResourceId());
-        mScore = savedInstanceState.getInt(M_SCORE, 0);
-        mTextViewScore.setText(mScore + " - " + mQuestionsBank.length);
-        mNumOfAnswered = savedInstanceState.getInt(M_NUM_OF_ANSWERED, 0);
-        mQuestionsBank = (Question[]) savedInstanceState.getSerializable(M_QUESTIONS_BANK);
     }
 
     private void setListeners() {
@@ -110,9 +108,6 @@ public class QuizActivity extends AppCompatActivity {
                 if (mQuestionsBank[mCurrentIndex].isDisable() == false) {
                     mImageButtonTrue.setEnabled(true);
                     mImageButtonFalse.setEnabled(true);
-                } else {
-                    mImageButtonTrue.setEnabled(false);
-                    mImageButtonFalse.setEnabled(false);
                 }
             }
         });
@@ -126,9 +121,6 @@ public class QuizActivity extends AppCompatActivity {
                 if (mQuestionsBank[mCurrentIndex].isDisable() == false) {
                     mImageButtonTrue.setEnabled(true);
                     mImageButtonFalse.setEnabled(true);
-                } else {
-                    mImageButtonTrue.setEnabled(false);
-                    mImageButtonFalse.setEnabled(false);
                 }
             }
         });
@@ -142,9 +134,6 @@ public class QuizActivity extends AppCompatActivity {
                 if (mQuestionsBank[mCurrentIndex].isDisable() == false) {
                     mImageButtonTrue.setEnabled(true);
                     mImageButtonFalse.setEnabled(true);
-                } else {
-                    mImageButtonTrue.setEnabled(false);
-                    mImageButtonFalse.setEnabled(false);
                 }
             }
         });
@@ -158,9 +147,6 @@ public class QuizActivity extends AppCompatActivity {
                 if (mQuestionsBank[mCurrentIndex].isDisable() == false) {
                     mImageButtonTrue.setEnabled(true);
                     mImageButtonFalse.setEnabled(true);
-                } else {
-                    mImageButtonTrue.setEnabled(false);
-                    mImageButtonFalse.setEnabled(false);
                 }
             }
         });
@@ -197,48 +183,55 @@ public class QuizActivity extends AppCompatActivity {
     }
 
     private void checkedAnswer(boolean userPressed) {
-        mNumOfAnswered++;
-        mQuestionsBank[mCurrentIndex].setDisable(true);
-        mImageButtonTrue.setEnabled(false);
-        mImageButtonFalse.setEnabled(false);
-        if (mQuestionsBank[mCurrentIndex].isTrueAnswer() == userPressed) {
-            mTextViewQuestion.setTextColor(Color.GREEN);
-            mScore++;
-            mTextViewScore.setText(mScore + " - " + mQuestionsBank.length);
-            LayoutInflater inflater = getLayoutInflater();
-            View layout = inflater.inflate(R.layout.custom_toast, (ViewGroup) findViewById(R.id.toast_layout));
-            Toast toast = new Toast(this);
-            toast.setGravity(Gravity.BOTTOM, 0, 0);
-            toast.setDuration(Toast.LENGTH_SHORT);
-            TextView textView = layout.findViewById(R.id.txt_toast);
-            textView.setText(R.string.toast_true);
-            textView.setTextColor(Color.GREEN);
-            ImageView imageView = layout.findViewById(R.id.img_toast);
-            imageView.setImageResource(R.drawable.ic_checked);
-            toast.setView(layout);
-            toast.show();
+        if (mQuestionsBank[mCurrentIndex].isDisable()) {
+            mImageButtonTrue.setEnabled(false);
+            mImageButtonFalse.setEnabled(false);
         } else {
-            mTextViewQuestion.setTextColor(Color.RED);
-            LayoutInflater inflater = getLayoutInflater();
-            View layout = inflater.inflate(R.layout.custom_toast, (ViewGroup) findViewById(R.id.toast_layout));
-            Toast toast = new Toast(this);
-            toast.setGravity(Gravity.TOP, 0, 75);
-            toast.setDuration(Toast.LENGTH_SHORT);
-            TextView textView = layout.findViewById(R.id.txt_toast);
-            textView.setText(R.string.toast_false);
-            textView.setTextColor(Color.RED);
-            ImageView imageView = layout.findViewById(R.id.img_toast);
-            imageView.setImageResource(R.drawable.ic_unchecked);
-            toast.setView(layout);
-            toast.show();
+            mNumOfAnswered++;
+            mQuestionsBank[mCurrentIndex].setDisable(true);
+            mImageButtonTrue.setEnabled(true);
+            mImageButtonFalse.setEnabled(true);
+            if (mQuestionsBank[mCurrentIndex].isTrueAnswer() == userPressed) {
+                mTextViewQuestion.setTextColor(Color.GREEN);
+                mScore++;
+                mTextViewScore.setText(mScore + " - " + mQuestionsBank.length);
+                LayoutInflater inflater = getLayoutInflater();
+                View layout = inflater.inflate(R.layout.custom_toast, (ViewGroup) findViewById(R.id.toast_layout));
+                Toast toast = new Toast(this);
+                toast.setGravity(Gravity.BOTTOM, 0, 0);
+                toast.setDuration(Toast.LENGTH_SHORT);
+                TextView textView = layout.findViewById(R.id.txt_toast);
+                textView.setText(R.string.toast_true);
+                textView.setTextColor(Color.GREEN);
+                ImageView imageView = layout.findViewById(R.id.img_toast);
+                imageView.setImageResource(R.drawable.ic_checked);
+                toast.setView(layout);
+                toast.show();
+            } else {
+                mTextViewQuestion.setTextColor(Color.RED);
+                LayoutInflater inflater = getLayoutInflater();
+                View layout = inflater.inflate(R.layout.custom_toast, (ViewGroup) findViewById(R.id.toast_layout));
+                Toast toast = new Toast(this);
+                toast.setGravity(Gravity.TOP, 0, 75);
+                toast.setDuration(Toast.LENGTH_SHORT);
+                TextView textView = layout.findViewById(R.id.txt_toast);
+                textView.setText(R.string.toast_false);
+                textView.setTextColor(Color.RED);
+                ImageView imageView = layout.findViewById(R.id.img_toast);
+                imageView.setImageResource(R.drawable.ic_unchecked);
+                toast.setView(layout);
+                toast.show();
 
-        }
-        if (mNumOfAnswered == mQuestionsBank.length) {
-            mLayoutScore.setVisibility(View.VISIBLE);
-            mLayoutMiddle.setVisibility(View.GONE);
-            mLayoutLast.setVisibility(View.GONE);
-            mTextViewScore.setVisibility(View.GONE);
-            mTextViewFinalScore.setText("امتیاز کسب شده شما در این بازی : " + mScore);
+            }
+
+
+            if (mNumOfAnswered == mQuestionsBank.length) {
+                mLayoutScore.setVisibility(View.VISIBLE);
+                mLayoutMiddle.setVisibility(View.GONE);
+                mLayoutLast.setVisibility(View.GONE);
+                mTextViewScore.setVisibility(View.GONE);
+                mTextViewFinalScore.setText("امتیاز کسب شده شما در این بازی : " + mScore);
+            }
         }
     }
 

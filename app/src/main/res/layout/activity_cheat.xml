@@ -7,7 +7,7 @@
     android:background="#EDDA30"
     android:gravity="center"
     android:orientation="vertical"
-    tools:context=".CheatActivity">
+    tools:context=".Controller.CheatActivity">
 
     <TextView
         android:id="@+id/txt_questioncheat"
