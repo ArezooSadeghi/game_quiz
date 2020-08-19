@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/layout_parent"
     android:background="#8DC9E4">
 
     <LinearLayout
@@ -81,25 +82,32 @@
         android:id="@+id/layout_last"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
+        android:layout_gravity="center|bottom"
         android:orientation="horizontal">
-
-        <ImageButton
-            android:id="@+id/btn_last"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:srcCompat="@drawable/ic_doubleleft" />
-
-        <ImageButton
-            android:id="@+id/btn_next"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:srcCompat="@drawable/ic_arrowleft" />
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="770dp"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/btn_last"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_doubleleft" />
+
+            <ImageButton
+                android:id="@+id/btn_next"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/ic_arrowleft" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|right"
             android:orientation="horizontal">
 
             <ImageButton
@@ -116,9 +124,10 @@
                 app:srcCompat="@drawable/ic_doubleright" />
         </LinearLayout>
 
+
     </LinearLayout>
 
-    <TextView
+       <TextView
         android:id="@+id/txt_score"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -130,8 +139,17 @@
         android:id="@+id/btn_cheat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|center"
+        android:layout_gravity="bottom|left"
         android:text="@string/cheat_button"
         android:textSize="24sp" />
+
+    <ImageButton
+        android:id="@+id/btn_setting"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
+        android:src="@drawable/ic_setting">
+
+    </ImageButton>
 
 </FrameLayout>

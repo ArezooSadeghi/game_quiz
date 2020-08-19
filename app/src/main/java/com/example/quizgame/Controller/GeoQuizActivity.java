@@ -6,12 +6,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.ImageFormat;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -19,12 +21,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.quizgame.R;
+import com.example.quizgame.SettingActivity;
 import com.example.quizgame.model.Question;
 
 public class GeoQuizActivity extends AppCompatActivity {
 
     private ImageButton mImageButtonTrue, mImageButtonFalse, mImageButtonNext, mImageButtonPrev,
-            mImageButtonFirst, mImageButtonLast, mImageButtonReset;
+            mImageButtonFirst, mImageButtonLast, mImageButtonReset, mImageButtonSetting;
 
     private Button mButtonCheat;
 
@@ -32,16 +35,22 @@ public class GeoQuizActivity extends AppCompatActivity {
 
     private LinearLayout mLayoutScore, mLayoutMiddle, mLayoutLast;
 
+    private FrameLayout mLayoutParent;
+
     private int mCurrentIndex, mNumOfAnswered, mScore = 0;
 
     private boolean mIsCheated;
 
+    private String mSizeOfText, mBackground;
+
+    private static final String M_SIZE_OF_TEXTQUESTION = "M_SIZE_OF_TEXTQUESTION";
     private static final String M_CURRENT_INDEX = "mCurrentIndex";
     private static final String M_SCORE = "mScore";
     private static final String M_NUM_OF_ANSWERED = "mNumOfAnswered";
     private static final String M_QUESTIONS_BANK = "mQuestionsBank";
     public static final String EXTRA_ANSWER_OF_QUESTION = "EXTRA_ANSWER_OF_QUESTION";
     public static final int REQUIST_CODE_CHEAT_ACTIVITY = 0;
+    public static final int REQUIST_CODE_SETTING_ACTIVITY = 1;
 
     Question[] mQuestionsBank = {new Question(R.string.question_tehran, true),
             new Question(R.string.question_africa, true),
@@ -73,6 +82,9 @@ public class GeoQuizActivity extends AppCompatActivity {
             if (mNumOfAnswered == mQuestionsBank.length) {
                 finishGame();
             }
+
+            float textSize = savedInstanceState.getFloat(M_SIZE_OF_TEXTQUESTION);
+            mTextViewQuestion.setTextSize(textSize);
         }
 
         setListeners();
@@ -88,6 +100,7 @@ public class GeoQuizActivity extends AppCompatActivity {
         outState.putInt(M_SCORE, mScore);
         outState.putInt(M_NUM_OF_ANSWERED, mNumOfAnswered);
         outState.putSerializable(M_QUESTIONS_BANK, mQuestionsBank);
+        outState.putFloat(M_SIZE_OF_TEXTQUESTION, mTextViewQuestion.getTextSize());
     }
 
     @Override
@@ -97,6 +110,33 @@ public class GeoQuizActivity extends AppCompatActivity {
             if (requestCode == REQUIST_CODE_CHEAT_ACTIVITY) {
                 mIsCheated = data.getBooleanExtra(CheatActivity.EXTRA_PLAYER_CHEATED, false);
                 mQuestionsBank[mCurrentIndex].setCheatedPlayer(mIsCheated);
+            }
+        }
+        if (resultCode == RESULT_OK) {
+            if (requestCode == REQUIST_CODE_SETTING_ACTIVITY) {
+                mSizeOfText = data.getStringExtra(SettingActivity.EXTRA_SIZE_OF_TEXT);
+                if (mSizeOfText.equals(getString(R.string.smallsizeof_text))) {
+                    mTextViewQuestion.setTextSize(14);
+                }else if (mSizeOfText.equals(getString(R.string.mediumsizeof_text))) {
+                    mTextViewQuestion.setTextSize(18);
+                }else {
+                    mTextViewQuestion.setTextSize(26);
+                }
+            }
+        }
+
+        if (resultCode == RESULT_OK) {
+            if (requestCode == REQUIST_CODE_SETTING_ACTIVITY) {
+                mBackground = data.getStringExtra(SettingActivity.EXTRA_BACKGROUND);
+                if (mBackground.equals(getString(R.string.whitecolor_text))) {
+                    mLayoutParent.setBackgroundColor(Color.parseColor("#ffffff"));
+                }else if (mBackground.equals(getString(R.string.lightredcolor_text))) {
+                    mLayoutParent.setBackgroundColor(Color.parseColor("#FF0000"));
+                }else if (mBackground.equals(getString(R.string.lightbluecolor_text))) {
+                    mLayoutParent.setBackgroundColor(Color.parseColor("#add8e6"));
+                }else {
+                    mLayoutParent.setBackgroundColor(Color.parseColor("#32CD32"));
+                }
             }
         }
     }
@@ -178,6 +218,7 @@ public class GeoQuizActivity extends AppCompatActivity {
                 mLayoutLast.setVisibility(View.VISIBLE);
                 mTextViewScore.setVisibility(View.VISIBLE);
                 mButtonCheat.setVisibility(View.VISIBLE);
+                mImageButtonSetting.setVisibility(View.VISIBLE);
                 mScore = 0;
                 mNumOfAnswered = 0;
                 mCurrentIndex = 0;
@@ -196,6 +237,14 @@ public class GeoQuizActivity extends AppCompatActivity {
                 Intent intent = new Intent(GeoQuizActivity.this, CheatActivity.class);
                 intent.putExtra(EXTRA_ANSWER_OF_QUESTION, mQuestionsBank[mCurrentIndex].isTrueAnswer());
                 startActivityForResult(intent, REQUIST_CODE_CHEAT_ACTIVITY);
+            }
+        });
+
+        mImageButtonSetting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(GeoQuizActivity.this, SettingActivity.class);
+                startActivityForResult(intent, REQUIST_CODE_SETTING_ACTIVITY);
             }
         });
     }
@@ -263,6 +312,7 @@ public class GeoQuizActivity extends AppCompatActivity {
             mLayoutLast.setVisibility(View.GONE);
             mTextViewScore.setVisibility(View.GONE);
             mButtonCheat.setVisibility(View.GONE);
+            mImageButtonSetting.setVisibility(View.GONE);
             mTextViewFinalScore.setText("امتیاز کسب شده شما در این بازی : " + mScore);
         }
     }
@@ -275,10 +325,12 @@ public class GeoQuizActivity extends AppCompatActivity {
         mImageButtonFirst = findViewById(R.id.btn_first);
         mImageButtonLast = findViewById(R.id.btn_last);
         mImageButtonReset = findViewById(R.id.btn_reset);
+        mImageButtonSetting = findViewById(R.id.btn_setting);
         mButtonCheat = findViewById(R.id.btn_cheat);
         mTextViewQuestion = findViewById(R.id.txt_question);
         mTextViewScore = findViewById(R.id.txt_score);
         mTextViewFinalScore = findViewById(R.id.txt_finalscore);
+        mLayoutParent = findViewById(R.id.layout_parent);
         mLayoutScore = findViewById(R.id.layout_score);
         mLayoutMiddle = findViewById(R.id.layout_middle);
         mLayoutLast = findViewById(R.id.layout_last);

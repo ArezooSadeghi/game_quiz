@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="10dp"
     android:background="#8DC9E4"
-    android:gravity="center"
-    android:orientation="vertical"
+    android:id="@+id/layout_parent"
     tools:context=".Controller.GeoQuizActivity">
 
     <LinearLayout
+        android:layout_gravity="center"
         android:id="@+id/layout_score"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -39,6 +38,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:layout_gravity="center"
         android:id="@+id/layout_middle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -73,6 +73,8 @@
     </LinearLayout>
 
     <LinearLayout
+        android:layout_marginTop="120dp"
+        android:layout_gravity="center"
         android:id="@+id/layout_last"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -105,6 +107,7 @@
     </LinearLayout>
 
     <TextView
+        android:layout_gravity="top|center"
         android:id="@+id/txt_score"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -112,10 +115,21 @@
         android:textSize="18sp" />
 
     <Button
+        android:layout_gravity="bottom|center"
+        android:layout_marginBottom="120dp"
         android:id="@+id/btn_cheat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/cheat_button"
         android:textSize="24sp" />
 
-</LinearLayout>
+   <ImageButton
+       android:id="@+id/btn_setting"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:layout_gravity="bottom|center"
+       android:src="@drawable/ic_setting">
+
+   </ImageButton>
+
+</FrameLayout>

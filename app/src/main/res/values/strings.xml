@@ -14,4 +14,11 @@
     <string name="questioncheat_text">آیا مایل به تقلب هستید؟</string>
     <string name="nocheat_button">خیر</string>
     <string name="yescheat_button">بله</string>
+    <string name="smallsizeof_text">کوچک</string>
+    <string name="mediumsizeof_text">متوسط</string>
+    <string name="largesizeof_text">بزرگ</string>
+    <string name="whitecolor_text">سفید</string>
+    <string name="lightredcolor_text">قرمز روشن</string>
+    <string name="lightbluecolor_text">آبی روشن</string>
+    <string name="lightgreencolor_text">سبز روشن</string>
 </resources>
