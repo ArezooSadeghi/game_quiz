@@ -51,7 +51,7 @@ public class CheatActivity extends AppCompatActivity {
                     mTextViewAnswerOfQuestion.setText("نادرست");
                 }
 
-                Intent intent = new Intent(CheatActivity.this, GeoQuizActivity.class);
+                Intent intent = new Intent();
                 intent.putExtra(EXTRA_PLAYER_CHEATED, true);
                 setResult(RESULT_OK, intent);
                 finish();

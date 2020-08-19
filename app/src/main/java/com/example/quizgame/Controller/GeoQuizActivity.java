@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.ImageFormat;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -49,6 +50,7 @@ public class GeoQuizActivity extends AppCompatActivity {
     private static final String M_NUM_OF_ANSWERED = "mNumOfAnswered";
     private static final String M_QUESTIONS_BANK = "mQuestionsBank";
     public static final String EXTRA_ANSWER_OF_QUESTION = "EXTRA_ANSWER_OF_QUESTION";
+    public static final String M_BACKGROUND_COLOR = "M_BACKGROUND_COLOR";
     public static final int REQUIST_CODE_CHEAT_ACTIVITY = 0;
     public static final int REQUIST_CODE_SETTING_ACTIVITY = 1;
 
@@ -85,6 +87,9 @@ public class GeoQuizActivity extends AppCompatActivity {
 
             float textSize = savedInstanceState.getFloat(M_SIZE_OF_TEXTQUESTION);
             mTextViewQuestion.setTextSize(textSize);
+
+            int backgroundColor = savedInstanceState.getInt(M_BACKGROUND_COLOR);
+            mLayoutParent.setBackgroundColor(backgroundColor);
         }
 
         setListeners();
@@ -101,6 +106,9 @@ public class GeoQuizActivity extends AppCompatActivity {
         outState.putInt(M_NUM_OF_ANSWERED, mNumOfAnswered);
         outState.putSerializable(M_QUESTIONS_BANK, mQuestionsBank);
         outState.putFloat(M_SIZE_OF_TEXTQUESTION, mTextViewQuestion.getTextSize());
+        ColorDrawable viewColor = (ColorDrawable) mLayoutParent.getBackground();
+        int colorId = viewColor.getColor();
+        outState.putInt(M_BACKGROUND_COLOR, colorId);
     }
 
     @Override
@@ -114,32 +122,30 @@ public class GeoQuizActivity extends AppCompatActivity {
         }
         if (resultCode == RESULT_OK) {
             if (requestCode == REQUIST_CODE_SETTING_ACTIVITY) {
-                mSizeOfText = data.getStringExtra(SettingActivity.EXTRA_SIZE_OF_TEXT);
-                if (mSizeOfText.equals(getString(R.string.smallsizeof_text))) {
+                /*mSizeOfText = data.getStringExtra(SettingActivity.EXTRA_SIZE_OF_TEXT);
+                if (mSizeOfText.equals("کوچک")) {
                     mTextViewQuestion.setTextSize(14);
-                }else if (mSizeOfText.equals(getString(R.string.mediumsizeof_text))) {
+                } else if (mSizeOfText.equals("متوسط")) {
                     mTextViewQuestion.setTextSize(18);
-                }else {
+                } else {
                     mTextViewQuestion.setTextSize(26);
-                }
-            }
-        }
-
-        if (resultCode == RESULT_OK) {
-            if (requestCode == REQUIST_CODE_SETTING_ACTIVITY) {
+                }*/
                 mBackground = data.getStringExtra(SettingActivity.EXTRA_BACKGROUND);
-                if (mBackground.equals(getString(R.string.whitecolor_text))) {
+                if (mBackground.equals("سفید")) {
                     mLayoutParent.setBackgroundColor(Color.parseColor("#ffffff"));
-                }else if (mBackground.equals(getString(R.string.lightredcolor_text))) {
+                } else if (mBackground.equals("قرمز روشن")) {
                     mLayoutParent.setBackgroundColor(Color.parseColor("#FF0000"));
-                }else if (mBackground.equals(getString(R.string.lightbluecolor_text))) {
+                } else if (mBackground.equals("آبی روشن")) {
                     mLayoutParent.setBackgroundColor(Color.parseColor("#add8e6"));
-                }else {
+                } else {
                     mLayoutParent.setBackgroundColor(Color.parseColor("#32CD32"));
                 }
+
             }
+
         }
     }
+
 
     private void setListeners() {
         mImageButtonTrue.setOnClickListener(new View.OnClickListener() {
