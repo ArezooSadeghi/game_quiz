@@ -1,6 +1,7 @@
 package com.example.quizgame.Controller;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -20,7 +21,7 @@ import android.widget.Toast;
 import com.example.quizgame.R;
 import com.example.quizgame.model.Question;
 
-public class QuizActivity extends AppCompatActivity {
+public class GeoQuizActivity extends AppCompatActivity {
 
     private ImageButton mImageButtonTrue, mImageButtonFalse, mImageButtonNext, mImageButtonPrev,
             mImageButtonFirst, mImageButtonLast, mImageButtonReset;
@@ -33,11 +34,14 @@ public class QuizActivity extends AppCompatActivity {
 
     private int mCurrentIndex, mNumOfAnswered, mScore = 0;
 
+    private boolean mIsCheated;
+
     private static final String M_CURRENT_INDEX = "mCurrentIndex";
     private static final String M_SCORE = "mScore";
     private static final String M_NUM_OF_ANSWERED = "mNumOfAnswered";
     private static final String M_QUESTIONS_BANK = "mQuestionsBank";
     public static final String EXTRA_ANSWER_OF_QUESTION = "EXTRA_ANSWER_OF_QUESTION";
+    public static final int REQUIST_CODE_CHEAT_ACTIVITY = 0;
 
     Question[] mQuestionsBank = {new Question(R.string.question_tehran, true),
             new Question(R.string.question_africa, true),
@@ -52,25 +56,29 @@ public class QuizActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_quiz);
+        setContentView(R.layout.activity_geoquiz);
+
+        setTitle("GeoQuiz");
 
         findViews();
+
+        setListeners();
+
         if (savedInstanceState != null) {
             mCurrentIndex = savedInstanceState.getInt(M_CURRENT_INDEX, 0);
             mNumOfAnswered = savedInstanceState.getInt(M_NUM_OF_ANSWERED, 0);
             mScore = savedInstanceState.getInt(M_SCORE, 0);
             mQuestionsBank = (Question[]) savedInstanceState.getSerializable(M_QUESTIONS_BANK);
 
+            if (mNumOfAnswered == mQuestionsBank.length) {
+                finishGame();
+            }
         }
-
-
-
 
         setListeners();
 
         mTextViewQuestion.setText(mQuestionsBank[mCurrentIndex].getResourceId());
         mTextViewScore.setText(mScore + " - " + mQuestionsBank.length);
-
     }
 
     @Override
@@ -80,6 +88,17 @@ public class QuizActivity extends AppCompatActivity {
         outState.putInt(M_SCORE, mScore);
         outState.putInt(M_NUM_OF_ANSWERED, mNumOfAnswered);
         outState.putSerializable(M_QUESTIONS_BANK, mQuestionsBank);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == REQUIST_CODE_CHEAT_ACTIVITY) {
+                mIsCheated = data.getBooleanExtra(CheatActivity.EXTRA_PLAYER_CHEATED, false);
+                mQuestionsBank[mCurrentIndex].setCheatedPlayer(mIsCheated);
+            }
+        }
     }
 
     private void setListeners() {
@@ -174,9 +193,9 @@ public class QuizActivity extends AppCompatActivity {
         mButtonCheat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(QuizActivity.this, CheatActivity.class);
+                Intent intent = new Intent(GeoQuizActivity.this, CheatActivity.class);
                 intent.putExtra(EXTRA_ANSWER_OF_QUESTION, mQuestionsBank[mCurrentIndex].isTrueAnswer());
-                startActivity(intent);
+                startActivityForResult(intent, REQUIST_CODE_CHEAT_ACTIVITY);
             }
         });
     }
@@ -194,18 +213,30 @@ public class QuizActivity extends AppCompatActivity {
                 mTextViewQuestion.setTextColor(Color.GREEN);
                 mScore++;
                 mTextViewScore.setText(mScore + " - " + mQuestionsBank.length);
-                LayoutInflater inflater = getLayoutInflater();
-                View layout = inflater.inflate(R.layout.custom_toast, (ViewGroup) findViewById(R.id.toast_layout));
-                Toast toast = new Toast(this);
-                toast.setGravity(Gravity.BOTTOM, 0, 75);
-                toast.setDuration(Toast.LENGTH_SHORT);
-                TextView textView = layout.findViewById(R.id.txt_toast);
-                textView.setText(R.string.toast_true);
-                textView.setTextColor(Color.GREEN);
-                ImageView imageView = layout.findViewById(R.id.img_toast);
-                imageView.setImageResource(R.drawable.ic_checked);
-                toast.setView(layout);
-                toast.show();
+                if (mQuestionsBank[mCurrentIndex].isCheatedPlayer()) {
+                    LayoutInflater inflater = getLayoutInflater();
+                    View layout = inflater.inflate(R.layout.custom_toast, (ViewGroup) findViewById(R.id.toast_layout));
+                    Toast toast = new Toast(this);
+                    toast.setGravity(Gravity.BOTTOM, 0, 75);
+                    toast.setDuration(Toast.LENGTH_SHORT);
+                    TextView textView = layout.findViewById(R.id.txt_toast);
+                    textView.setText("تقلب کار خوبی نیست!!!");
+                    toast.setView(layout);
+                    toast.show();
+                } else {
+                    LayoutInflater inflater = getLayoutInflater();
+                    View layout = inflater.inflate(R.layout.custom_toast, (ViewGroup) findViewById(R.id.toast_layout));
+                    Toast toast = new Toast(this);
+                    toast.setGravity(Gravity.BOTTOM, 0, 75);
+                    toast.setDuration(Toast.LENGTH_SHORT);
+                    TextView textView = layout.findViewById(R.id.txt_toast);
+                    textView.setText(R.string.toast_true);
+                    textView.setTextColor(Color.GREEN);
+                    ImageView imageView = layout.findViewById(R.id.img_toast);
+                    imageView.setImageResource(R.drawable.ic_checked);
+                    toast.setView(layout);
+                    toast.show();
+                }
             } else {
                 mTextViewQuestion.setTextColor(Color.RED);
                 LayoutInflater inflater = getLayoutInflater();
@@ -220,18 +251,19 @@ public class QuizActivity extends AppCompatActivity {
                 imageView.setImageResource(R.drawable.ic_unchecked);
                 toast.setView(layout);
                 toast.show();
-
             }
+            finishGame();
+        }
+    }
 
-
-            if (mNumOfAnswered == mQuestionsBank.length) {
-                mLayoutScore.setVisibility(View.VISIBLE);
-                mLayoutMiddle.setVisibility(View.GONE);
-                mLayoutLast.setVisibility(View.GONE);
-                mTextViewScore.setVisibility(View.GONE);
-                mButtonCheat.setVisibility(View.GONE);
-                mTextViewFinalScore.setText("امتیاز کسب شده شما در این بازی : " + mScore);
-            }
+    private void finishGame() {
+        if (mNumOfAnswered == mQuestionsBank.length) {
+            mLayoutScore.setVisibility(View.VISIBLE);
+            mLayoutMiddle.setVisibility(View.GONE);
+            mLayoutLast.setVisibility(View.GONE);
+            mTextViewScore.setVisibility(View.GONE);
+            mButtonCheat.setVisibility(View.GONE);
+            mTextViewFinalScore.setText("امتیاز کسب شده شما در این بازی : " + mScore);
         }
     }
 

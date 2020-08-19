@@ -6,6 +6,7 @@ public class Question implements Serializable {
     private int mResourceId;
     private boolean mIsTrueAnswer;
     private boolean mIsDisable;
+    private boolean mIsCheatedPlayer;
 
     public Question() {
     }
@@ -13,6 +14,14 @@ public class Question implements Serializable {
     public Question(int resourceId, boolean answerOfQuestion) {
         mResourceId = resourceId;
         mIsTrueAnswer = answerOfQuestion;
+    }
+
+    public boolean isCheatedPlayer() {
+        return mIsCheatedPlayer;
+    }
+
+    public void setCheatedPlayer(boolean cheatedPlayer) {
+        mIsCheatedPlayer = cheatedPlayer;
     }
 
     public int getResourceId() {

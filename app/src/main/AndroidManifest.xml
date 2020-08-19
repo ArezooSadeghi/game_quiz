@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".Controller.CheatActivity"></activity>
-        <activity android:name=".Controller.QuizActivity">
+        <activity android:name=".Controller.GeoQuizActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

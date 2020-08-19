@@ -8,7 +8,7 @@
     android:background="#8DC9E4"
     android:gravity="center"
     android:orientation="vertical"
-    tools:context=".Controller.QuizActivity">
+    tools:context=".Controller.GeoQuizActivity">
 
     <LinearLayout
         android:id="@+id/layout_score"

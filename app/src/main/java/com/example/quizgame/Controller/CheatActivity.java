@@ -8,24 +8,30 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.quizgame.Controller.QuizActivity;
 import com.example.quizgame.R;
 
 public class CheatActivity extends AppCompatActivity {
+
     private Button mButtonYesCheat, mButtonNoCheat;
 
     private TextView mTextViewAnswerOfQuestion;
 
+    private boolean mAnswer;
+
+    public static final String EXTRA_PLAYER_CHEATED = "Extra_Player_Cheated";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cheat);
 
+        setTitle("Cheat");
+
         Intent intent = getIntent();
-        intent.getBooleanExtra(QuizActivity.EXTRA_ANSWER_OF_QUESTION, false);
+        mAnswer = intent.getBooleanExtra(GeoQuizActivity.EXTRA_ANSWER_OF_QUESTION, false);
 
         findViews();
+
         setListeners();
     }
 
@@ -39,7 +45,16 @@ public class CheatActivity extends AppCompatActivity {
         mButtonYesCheat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //todo
+                if (mAnswer) {
+                    mTextViewAnswerOfQuestion.setText("درست");
+                }else {
+                    mTextViewAnswerOfQuestion.setText("نادرست");
+                }
+
+                Intent intent = new Intent(CheatActivity.this, GeoQuizActivity.class);
+                intent.putExtra(EXTRA_PLAYER_CHEATED, true);
+                setResult(RESULT_OK, intent);
+                finish();
             }
         });
 
@@ -50,5 +65,4 @@ public class CheatActivity extends AppCompatActivity {
             }
         });
      }
-
 }
