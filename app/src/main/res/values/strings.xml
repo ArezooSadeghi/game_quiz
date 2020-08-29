@@ -21,4 +21,6 @@
     <string name="lightredcolor_text">قرمز روشن</string>
     <string name="lightbluecolor_text">آبی روشن</string>
     <string name="lightgreencolor_text">سبز روشن</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
