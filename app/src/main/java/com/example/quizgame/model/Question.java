@@ -1,19 +1,23 @@
 package com.example.quizgame.model;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 public class Question implements Serializable {
     private int mResourceId;
     private boolean mIsTrueAnswer;
     private boolean mIsDisable;
     private boolean mIsCheatedPlayer;
+    private UUID mId;
 
     public Question() {
+        mId = UUID.randomUUID();
     }
 
     public Question(int resourceId, boolean answerOfQuestion) {
         mResourceId = resourceId;
         mIsTrueAnswer = answerOfQuestion;
+        mId = UUID.randomUUID();
     }
 
     public boolean isCheatedPlayer() {
@@ -46,5 +50,9 @@ public class Question implements Serializable {
 
     public void setDisable(boolean disable) {
         mIsDisable = disable;
+    }
+
+    public UUID getId() {
+        return mId;
     }
 }

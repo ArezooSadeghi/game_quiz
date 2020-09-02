@@ -7,6 +7,17 @@
     <string name="question_africa">مصردر قاره ی آفریقا است</string>
     <string name="question_americans">آمریکا پرجمعیت ترین کشور دنیا است</string>
     <string name="question_asia">قاره ی آسیا در نیمکره ی جنوبی جهان است</string>
+    <string name="question1">باکو پایتخت آذربایجان است</string>
+    <string name="question2">ایروان پایتخت افغانستان است</string>
+    <string name="question3">اسلام آباد پایتخت پاکستان است</string>
+    <string name="question4">باکوپایتخت افغانستان است</string>
+    <string name="question5">لندن پایتخت انگلستان است</string>
+    <string name="question6">وین پایتخت اتریش است</string>
+    <string name="question7">رم پایتخت ایتالیا است</string>
+    <string name="question8">بلژیک پایتخت افغانستان است</string>
+    <string name="question9">رم پایتخت بلژیک است</string>
+    <string name="question10">جاکارتا پایتخت اندونزی است</string>
+
     <string name="toast_true">جواب شما صحیح است</string>
     <string name="toast_false">جواب شما غلط است</string>
     <string name="game_over">بازی تمام شد!!!</string>
